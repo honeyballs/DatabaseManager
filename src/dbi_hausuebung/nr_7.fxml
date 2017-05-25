@@ -36,8 +36,8 @@
       </TextArea>
       <ButtonBar prefHeight="40.0" prefWidth="600.0">
         <buttons>
-          <Button id="loadButton" fx:id="loadButton" mnemonicParsing="false" text="Load" />
-            <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
+          <Button id="loadButton" fx:id="loadButton" mnemonicParsing="false" onAction="#loadSQL" text="Load" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveSQL" text="Save" />
             <Button fx:id="executeButton" mnemonicParsing="false" onAction="#executeQuery" text="Execute" />
         </buttons>
          <FlowPane.margin>

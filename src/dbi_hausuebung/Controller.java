@@ -1,7 +1,11 @@
 package dbi_hausuebung;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +41,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -58,7 +63,7 @@ public class Controller implements Initializable {
 
 	@FXML
 	private TableView resultsTable;
-	
+
 	@FXML
 	private Button disconnectButton;
 
@@ -186,19 +191,85 @@ public class Controller implements Initializable {
 		}
 
 	}
-	
+
+	@FXML
+	private void saveSQL(ActionEvent event) {
+
+		FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter(
+				"SQL files (*.sql)", "*.sql");
+		fileChooser.getExtensionFilters().add(filter);
+
+		File file = fileChooser.showSaveDialog(queryTextField.getScene()
+				.getWindow());
+
+		if (file != null) {
+
+			if (queryTextField.getText().length() > 0) {
+
+				try {
+
+					FileWriter fileWriter = new FileWriter(file);
+					fileWriter.write(queryTextField.getText());
+					fileWriter.close();
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			} else {
+
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Kein Text");
+				alert.setHeaderText("Keine Query in Textfeld");
+				alert.setContentText("Geben Sie eine Query ein, bevor Sie versuchen zu speichern.");
+				alert.showAndWait();
+
+			}
+
+		}
+
+	}
+
+	@FXML
+	private void loadSQL(ActionEvent event) {
+		
+		FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter(
+				"SQL files (*.sql)", "*.sql");
+		fileChooser.getExtensionFilters().add(filter);
+		
+		File f = fileChooser.showOpenDialog(queryTextField.getScene().getWindow());
+		
+		if (f != null && f.canRead()) {
+			
+			try {
+				
+				byte[] encoded = Files.readAllBytes(f.toPath());
+				String query = new String(encoded, StandardCharsets.UTF_8);
+				queryTextField.setText(query);
+				
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+			
+					
+		}
+	}
+
 	@FXML
 	private void disconnect() {
-		
+
 		if (manager != null) {
 			if (manager.isConnected()) {
-				
+
 				manager.disconnect();
 				disconnectButton.setVisible(false);
-				
-			}	
+
+			}
 		}
-		
+
 	}
 
 	@Override
@@ -214,7 +285,7 @@ public class Controller implements Initializable {
 			alert.setContentText("Sie sind mit der angeforderten Datenbank verbunden.");
 			alert.showAndWait();
 			disconnectButton.setVisible(true);
-			
+
 		} else {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.setTitle("Fehler");
