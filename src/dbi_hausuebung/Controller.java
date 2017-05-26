@@ -266,6 +266,15 @@ public class Controller implements Initializable {
 
 				manager.disconnect();
 				disconnectButton.setVisible(false);
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Disconnect");
+				alert.setHeaderText("Verbindung zur Datenbank getrennt.");
+				alert.setContentText("Sie haben die Verbindung zur Datenbank getrennt.");
+				alert.showAndWait();
+				
+				resultsTable.getItems().clear();
+				resultsTable.getColumns().clear();
+				queryTextField.clear();
 
 			}
 		}
