@@ -284,6 +284,7 @@ public class Controller implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
+		/*
 		String[] creds = { "azamon", "root", "" };
 		manager = new DBManager(creds);
 
@@ -301,7 +302,7 @@ public class Controller implements Initializable {
 			alert.setHeaderText("Ein Fehler ist aufgetreten.");
 			alert.setContentText("Bei der Verbindung zur Datenbank ist ein Fehler aufgetreten.");
 			alert.showAndWait();
-		}
+		} */
 
 	}
 
